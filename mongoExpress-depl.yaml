@@ -31,4 +31,7 @@ spec:
             name: mongodb-secret
             key: mongo-password
         - name: ME_CONFIG_MONGODB_SERVER
-           value:
+          valueFrom:
+           configMapKeyRef: #add configmap reference, name is configmap name, key is database_url from configmap
+            name: mongodb-configmap
+            key: database_url
