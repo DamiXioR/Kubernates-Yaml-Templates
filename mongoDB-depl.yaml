@@ -30,3 +30,16 @@ spec:
            secretKeyRef:
             name: mongodb-secret #secret name
             key: mongo-password  #password value from secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector: #is using to connect to the pod, it is the same as a label name in deployment
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017 #it is a service port
+      targetPort: 27017 #it is a target port, so it is deployment container port
