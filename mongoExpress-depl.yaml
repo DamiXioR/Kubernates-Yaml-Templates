@@ -22,12 +22,12 @@ spec:
         env: #add enivroment variables for username, password and url of mongoDB
         - name: ME_CONFIG_BASICAUTH_USERNAME
           valueFrom:
-           configMapKeyRef:
+           secretKeyRef:
             name: mongodb-secret
             key: mongo-username
         - name: ME_CONFIG_BASICAUTH_PASSWORD
           valueFrom:
-           configMapKeyRef:
+           secretKeyRef:
             name: mongodb-secret
             key: mongo-password
         - name: ME_CONFIG_MONGODB_SERVER
@@ -35,3 +35,17 @@ spec:
            configMapKeyRef: #add configmap reference, name is configmap name, key is database_url from configmap
             name: mongodb-configmap
             key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: mongo-express-service
+spec:
+ selector: #the same as mongo express name
+  app: mongo-express
+ type: LoadBalancer #type for external service
+ ports:
+  - protocol: TCP
+    port: 8081 #mongo express service port
+    targetPort: 8081 #mongo express deployment port
+    nodePort: 30000 #must be between 30000 - 32767
